@@ -4,7 +4,7 @@
 #
 Name     : mdadm
 Version  : 4.0
-Release  : 5
+Release  : 7
 URL      : https://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz
 Source0  : https://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz
 Summary  : mdadm is used for controlling Linux md devices (aka RAID arrays)
@@ -12,6 +12,7 @@ Group    : Development/Tools
 License  : GPL-2.0
 Requires: mdadm-bin
 Requires: mdadm-doc
+Patch1: 0001-Gcc-7-fixes.patch
 
 %description
 mdadm is a program that can be used to create, manage, and monitor
@@ -35,14 +36,18 @@ doc components for the mdadm package.
 
 %prep
 %setup -q -n mdadm-4.0
+%patch1 -p1
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1489069397
+export SOURCE_DATE_EPOCH=1503423651
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1489069397
+export SOURCE_DATE_EPOCH=1503423651
 rm -rf %{buildroot}
 %make_install
 
