@@ -4,7 +4,7 @@
 #
 Name     : mdadm
 Version  : 4.0
-Release  : 7
+Release  : 8
 URL      : https://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz
 Source0  : https://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz
 Summary  : mdadm is used for controlling Linux md devices (aka RAID arrays)
