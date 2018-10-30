@@ -1,0 +1,26 @@
+From a9f99c63e643630469332c32e3d2c421eb1dd7ef Mon Sep 17 00:00:00 2001
+From: Arjan van de Ven <arjan@linux.intel.com>
+Date: Fri, 11 May 2018 14:15:19 +0000
+Subject: [PATCH 2/2] no werror
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 2767ac6..5e24cbd 100644
+--- a/Makefile
++++ b/Makefile
+@@ -48,7 +48,7 @@ endif
+ 
+ CC ?= $(CROSS_COMPILE)gcc
+ CXFLAGS ?= -ggdb
+-CWFLAGS = -Wall -Werror -Wstrict-prototypes -Wextra -Wno-unused-parameter
++CWFLAGS = -Wall -Wstrict-prototypes -Wextra -Wno-unused-parameter
+ ifdef WARN_UNUSED
+ CWFLAGS += -Wp,-D_FORTIFY_SOURCE=2 -O3
+ endif
+-- 
+2.19.1
+
