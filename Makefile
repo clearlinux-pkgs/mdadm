@@ -1,5 +1,5 @@
 PKG_NAME := mdadm
-URL = https://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz
+URL = https://mirrors.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.1.tar.xz
 ARCHIVES = 
 
 include ../common/Makefile.common
