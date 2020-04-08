@@ -4,13 +4,14 @@
 #
 Name     : mdadm
 Version  : 4.1
-Release  : 12
+Release  : 13
 URL      : https://mirrors.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.1.tar.xz
 Source0  : https://mirrors.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.1.tar.xz
 Summary  : mdadm is used for controlling Linux md devices (aka RAID arrays)
 Group    : Development/Tools
 License  : GPL-2.0
 Requires: mdadm-bin = %{version}-%{release}
+Requires: mdadm-config = %{version}-%{release}
 Requires: mdadm-license = %{version}-%{release}
 Requires: mdadm-man = %{version}-%{release}
 Patch1: 0001-Gcc-7-fixes.patch
@@ -23,11 +24,19 @@ Linux MD (Software RAID) devices.
 %package bin
 Summary: bin components for the mdadm package.
 Group: Binaries
+Requires: mdadm-config = %{version}-%{release}
 Requires: mdadm-license = %{version}-%{release}
-Requires: mdadm-man = %{version}-%{release}
 
 %description bin
 bin components for the mdadm package.
+
+
+%package config
+Summary: config components for the mdadm package.
+Group: Default
+
+%description config
+config components for the mdadm package.
 
 
 %package license
@@ -48,6 +57,7 @@ man components for the mdadm package.
 
 %prep
 %setup -q -n mdadm-4.1
+cd %{_builddir}/mdadm-4.1
 %patch1 -p1
 %patch2 -p1
 
@@ -55,32 +65,44 @@ man components for the mdadm package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1540858830
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1586389874
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 make  %{?_smp_mflags}
 
+
 %install
-export SOURCE_DATE_EPOCH=1540858830
+export SOURCE_DATE_EPOCH=1586389874
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mdadm
-cp COPYING %{buildroot}/usr/share/package-licenses/mdadm/COPYING
-%make_install
+cp %{_builddir}/mdadm-4.1/COPYING %{buildroot}/usr/share/package-licenses/mdadm/4cc77b90af91e615a64ae04893fdffa7939db84c
+%make_install UDEVDIR=/usr/lib/udev
 
 %files
 %defattr(-,root,root,-)
-/lib/udev/rules.d/01-md-raid-creating.rules
-/lib/udev/rules.d/63-md-raid-arrays.rules
-/lib/udev/rules.d/64-md-raid-assembly.rules
-/lib/udev/rules.d/69-md-clustered-confirm-device.rules
 
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/mdadm
 /usr/bin/mdmon
 
+%files config
+%defattr(-,root,root,-)
+/usr/lib/udev/rules.d/01-md-raid-creating.rules
+/usr/lib/udev/rules.d/63-md-raid-arrays.rules
+/usr/lib/udev/rules.d/64-md-raid-assembly.rules
+/usr/lib/udev/rules.d/69-md-clustered-confirm-device.rules
+
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/mdadm/COPYING
+/usr/share/package-licenses/mdadm/4cc77b90af91e615a64ae04893fdffa7939db84c
 
 %files man
 %defattr(0644,root,root,0755)
